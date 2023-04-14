@@ -8,11 +8,11 @@ import java.nio.file.Paths;
 
 public class FileUtil {
 
-    public static File initDir(String pathToDir) throws IOException {
+    public static void initDir(String pathToDir) throws IOException {
         Path path = Paths.get(pathToDir);
         if (!Files.exists(path)){
             Files.createDirectory(path);
         }
-        return new File(pathToDir);
+        new File(pathToDir);
     }
 }

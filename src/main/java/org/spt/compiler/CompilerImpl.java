@@ -2,7 +2,6 @@ package org.spt.compiler;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.spt.util.FileUtil;
 
@@ -16,18 +15,19 @@ public class CompilerImpl implements Compiler{
     private final String TMP_DIR_PATH = "./tmp";
     @Getter
     @Setter
-    private String MAVEN_DEPENDENCIES_REPOSITORY_DIR = "~/.m2/repository";
+    private String MAVEN_DEPENDENCIES_REPOSITORY_DIR;
     @Getter
     @Setter
     private JavaVersion sourceVersion = JavaVersion.JAVA_8;
     @Getter
     @Setter
     private JavaVersion targetVersion = JavaVersion.JAVA_8;
-    private String sourceDir;
+    private final String sourceDir;
 
     public CompilerImpl(String sourceDir) throws IOException {
         FileUtil.initDir(TMP_DIR_PATH);
         this.sourceDir = sourceDir;
+        MAVEN_DEPENDENCIES_REPOSITORY_DIR = sourceDir + "../../../lib/*";
     }
 
     @Override

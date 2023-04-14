@@ -4,5 +4,5 @@ import java.io.File;
 
 public interface Redefiner {
 
-    public boolean redefineClass(Class clazz, File file);
+    boolean redefineClass(Class<?> clazz, File file);
 }

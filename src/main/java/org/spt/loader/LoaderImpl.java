@@ -16,15 +16,13 @@ public class LoaderImpl implements Loader {
     private final URLClassLoader urlClassLoader;
 
     public LoaderImpl() throws MalformedURLException {
-        this.urlClassLoader = new URLClassLoader(new URL[] {Paths.get(TMP_DIR_PATH).toAbsolutePath().toUri().toURL()});
+        this.urlClassLoader = new URLClassLoader(new URL[] {Paths.get(TMP_DIR_PATH).toAbsolutePath().toUri().toURL()}, getClass().getClassLoader());
     }
 
     @Override
     public boolean load(File file) {
         try {
-            String className = file.getAbsolutePath()
-                    .replace(Paths.get(TMP_DIR_PATH).toAbsolutePath() + "/", "")
-                    .replace("/", ".");
+            String className = convertFileToClassName(file);
             log.debug("Loading class from {} with name {}", file.getAbsolutePath(), className);
             urlClassLoader.loadClass(className);
             return true;
@@ -33,4 +31,17 @@ public class LoaderImpl implements Loader {
             return false;
         }
     }
+
+    @Override
+    public ClassLoader getLoader() {
+        return urlClassLoader;
+    }
+
+    private String convertFileToClassName(File file){
+        return file.getAbsolutePath()
+                .replace(Paths.get(TMP_DIR_PATH).toAbsolutePath() + "/", "")
+                .replace("/", ".")
+                .replace(".class", "");
+    }
+
 }

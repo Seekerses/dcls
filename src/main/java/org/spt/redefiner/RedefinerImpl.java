@@ -18,7 +18,7 @@ public class RedefinerImpl implements Redefiner {
         this.instrumentation = instrumentation;
     }
     @Override
-    public boolean redefineClass(Class clazz, File file) {
+    public boolean redefineClass(Class<?> clazz, File file) {
         byte[] bytecode;
         try {
             log.debug("Reading class definition from {}", file.getAbsolutePath());
