@@ -19,8 +19,4 @@ public class LoaderStub implements Loader {
         return true;
     }
 
-    @Override
-    public ClassLoader getLoader() {
-        return loader;
-    }
 }

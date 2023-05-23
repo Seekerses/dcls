@@ -34,7 +34,7 @@ public class ControllerTest {
 
     @Test
     public void testFileModified(){
-        controller.processChanges(path.toFile(), StandardWatchEventKinds.ENTRY_MODIFY);
+        controller.processChanges(path, StandardWatchEventKinds.ENTRY_MODIFY);
         assertEquals(1, compilerStub.mem.size());
         assertEquals(1, redefinerStub.map.size());
         assertEquals(path.toAbsolutePath().toString(), compilerStub.mem.get(0).getAbsolutePath());
@@ -44,7 +44,7 @@ public class ControllerTest {
 
     @Test
     public void testFileCreated(){
-        controller.processChanges(path.toFile(), StandardWatchEventKinds.ENTRY_CREATE);
+        controller.processChanges(path, StandardWatchEventKinds.ENTRY_CREATE);
         assertEquals(1, compilerStub.mem.size());
         assertEquals(1, loaderStub.mem.size());
         assertEquals(path.toAbsolutePath().toString(), compilerStub.mem.get(0).getAbsolutePath());

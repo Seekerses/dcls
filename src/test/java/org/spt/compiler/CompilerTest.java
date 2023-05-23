@@ -12,7 +12,7 @@ public class CompilerTest {
 
     @Test
     public void compileClass() throws Exception {
-        CompilerImpl compiler = new CompilerImpl("./src/test/java");
+        CompilerImpl compiler = new CompilerImpl();
         assertEquals("MockClass.class",
                 compiler.compile(Paths.get("./src/test/java/org/spt/util/MockClass.java").toFile()).getName());
         Path bottom = Paths.get("./tmp/org/spt/util/MockClass.class");

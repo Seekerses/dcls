@@ -17,7 +17,7 @@ public class FileWatcherTest {
         Path srcDir = Files.createDirectory(Paths.get("./tmp"));
         Path file = Files.createFile(Paths.get(srcDir + "/file.java"));
         AgentControllerStub stub = new AgentControllerStub();
-        FileWatcherImpl fileWatcher = new FileWatcherImpl(srcDir.toRealPath().toString(), stub);
+        FileWatcherImpl fileWatcher = new FileWatcherImpl(stub);
         Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(500);
@@ -42,7 +42,7 @@ public class FileWatcherTest {
     public void testDirCreated() throws IOException, InterruptedException {
         Path srcDir = Files.createDirectory(Paths.get("./tmp"));
         AgentControllerStub stub = new AgentControllerStub();
-        FileWatcherImpl fileWatcher = new FileWatcherImpl(srcDir.toRealPath().toString(), stub);
+        FileWatcherImpl fileWatcher = new FileWatcherImpl(stub);
         Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(100);
@@ -70,7 +70,7 @@ public class FileWatcherTest {
     public void testFileCreated() throws IOException, InterruptedException {
         Path srcDir = Files.createDirectory(Paths.get("./tmp"));
         AgentControllerStub stub = new AgentControllerStub();
-        FileWatcherImpl fileWatcher = new FileWatcherImpl(srcDir.toRealPath().toString(), stub);
+        FileWatcherImpl fileWatcher = new FileWatcherImpl(stub);
         Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(100);

@@ -1,9 +1,9 @@
 package org.spt.watch;
 
 import lombok.extern.slf4j.Slf4j;
+import org.spt.controller.Configuration;
 import org.spt.controller.Controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -23,11 +23,11 @@ public class FileWatcherImpl implements FileWatcher{
     private boolean running = false;
     private final Map<Path, FileTime> lastModifiedMap = new HashMap<>();
 
-    public FileWatcherImpl(String sourceDir, Controller redefinitionController) throws IOException {
+    public FileWatcherImpl(Controller redefinitionController) throws IOException {
         this.redefinitionController = redefinitionController;
-        log.info("Registering new File Watcher to source directory: {}", sourceDir);
+        log.info("Registering new File Watcher to source directory: {}", Configuration.getInstance().getSourceDir());
         watchService = FileSystems.getDefault().newWatchService();
-        Path root = Paths.get(sourceDir);
+        Path root = Configuration.getInstance().getSourceDir();
         registerRecursive(root);
     }
 
@@ -39,8 +39,7 @@ public class FileWatcherImpl implements FileWatcher{
             if (watchKey == null) continue;
             for (WatchEvent<?> event : watchKey.pollEvents()) {
                 WatchEvent.Kind<?> kind = event.kind();
-                File targetFile = getEventTargetFile(watchKey, event);
-                Path targetPath = Paths.get(targetFile.getAbsolutePath());
+                Path targetPath = getEventTargetFile(watchKey, event);
 
                 // prevent temp files
                 if(targetPath.getFileName().toString().endsWith("~") ||
@@ -60,15 +59,15 @@ public class FileWatcherImpl implements FileWatcher{
                     lastModifiedMap.put(targetPath, lastTime);
                 } catch (IOException e) {
                     log.error("I/O exception occurred when reading last modified time for {}",
-                            targetPath.toAbsolutePath());
+                            targetPath);
                 }
 
                 // handle event based on type and file
                 if (ENTRY_CREATE.equals(kind)) {
                     if (targetPath.getFileName().toString().endsWith(".java")){
                         log.debug("Detected new Java-file: file {}", event.context());
-                        redefinitionController.processChanges(targetFile, kind);
-                    } else if (targetFile.isDirectory()){
+                        redefinitionController.processChanges(targetPath, kind);
+                    } else if (Files.isDirectory(targetPath)){
                         try {
                             log.info("Register new path: {}", targetPath);
                             keys.put(targetPath.register(watchService, ENTRY_CREATE, ENTRY_MODIFY), targetPath);
@@ -81,7 +80,7 @@ public class FileWatcherImpl implements FileWatcher{
 
                     if (targetPath.getFileName().toString().endsWith(".java")) {
                         log.debug("Detected modification: type {}, file {}", kind, event.context());
-                        redefinitionController.processChanges(targetFile, kind);
+                        redefinitionController.processChanges(targetPath, kind);
                     }
 
                 }
@@ -94,11 +93,11 @@ public class FileWatcherImpl implements FileWatcher{
         running = false;
     }
 
-    private File getEventTargetFile(WatchKey key, WatchEvent<?> event){
+    private Path getEventTargetFile(WatchKey key, WatchEvent<?> event){
         if (event.context() == null || event.context().toString().equals("")){
-            return keys.get(key).toFile();
+            return keys.get(key);
         }
-        return new File(keys.get(key) + "/" + event.context().toString());
+        return Paths.get(keys.get(key) + "/" + event.context().toString());
     }
 
     private void registerRecursive(final Path root) throws IOException {

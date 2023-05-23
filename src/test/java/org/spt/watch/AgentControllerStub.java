@@ -3,6 +3,7 @@ package org.spt.watch;
 import org.spt.controller.Controller;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,8 @@ public class AgentControllerStub implements Controller {
     public List<FileEvent> modifiedFiles = new ArrayList<>();
 
     @Override
-    public void processChanges(File file, WatchEvent.Kind<?> eventKind){
-        modifiedFiles.add(new FileEvent(file, eventKind));
+    public void processChanges(Path file, WatchEvent.Kind<?> eventKind){
+        modifiedFiles.add(new FileEvent(file.toFile(), eventKind));
     }
 
     public static class FileEvent{

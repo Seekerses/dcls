@@ -1,47 +1,39 @@
 package org.spt.loader;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContextExtensionsKt;
+import org.spt.controller.Configuration;
+import org.spt.util.FileUtil;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.io.IOException;
+import java.lang.instrument.Instrumentation;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.jar.JarFile;
 
 @Slf4j
 public class LoaderImpl implements Loader {
 
-    private final String TMP_DIR_PATH = "./tmp";
-
-    private final URLClassLoader urlClassLoader;
-
-    public LoaderImpl() throws MalformedURLException {
-        this.urlClassLoader = new URLClassLoader(new URL[] {Paths.get(TMP_DIR_PATH).toAbsolutePath().toUri().toURL()}, getClass().getClassLoader());
+    public LoaderImpl(Instrumentation instrumentation, JarFile jarFile) {
+        instrumentation.appendToSystemClassLoaderSearch(jarFile);
     }
 
     @Override
-    public boolean load(File file) {
+    public boolean load(Path file) {
         try {
-            String className = convertFileToClassName(file);
-            log.debug("Loading class from {} with name {}", file.getAbsolutePath(), className);
-            urlClassLoader.loadClass(className);
+            String className = FileUtil.compiledFileToClassName(file);
+            log.debug("Loading class from {} with name {}", file, className);
+            getClass().getClassLoader().loadClass(className);
             return true;
+            ApplicationContext.get
         }catch (ClassNotFoundException ex){
-            log.error("Failed to load class from {}", file.getAbsolutePath());
+            log.error("Failed to load class from {}, {}", file, ex.getMessage());
+            return false;
+        } catch (IOException e) {
+            log.error("Failed to find convert compiled file name to class name.");
             return false;
         }
     }
-
-    @Override
-    public ClassLoader getLoader() {
-        return urlClassLoader;
-    }
-
-    private String convertFileToClassName(File file){
-        return file.getAbsolutePath()
-                .replace(Paths.get(TMP_DIR_PATH).toAbsolutePath() + "/", "")
-                .replace("/", ".")
-                .replace(".class", "");
-    }
-
 }

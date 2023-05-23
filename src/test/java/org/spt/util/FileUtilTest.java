@@ -13,7 +13,7 @@ public class FileUtilTest {
     @Test
     public void createDirTest() throws IOException {
         Path tmp = Paths.get("./tmp");
-        FileUtil.initDir(String.valueOf(tmp));
+        FileUtil.initDir(Paths.get(String.valueOf(tmp)));
         Assertions.assertTrue(Files.exists(tmp));
         Files.deleteIfExists(tmp);
     }
@@ -22,7 +22,7 @@ public class FileUtilTest {
     public void checkDirExists() throws IOException {
         Path tmp = Paths.get("./tmp");
         Files.createDirectory(tmp);
-        FileUtil.initDir(String.valueOf(tmp));
+        FileUtil.initDir(Paths.get(String.valueOf(tmp)));
         Assertions.assertTrue(Files.exists(tmp));
         Files.deleteIfExists(tmp);
     }

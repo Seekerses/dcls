@@ -9,17 +9,18 @@ import org.spt.loader.Loader;
 import org.spt.loader.LoaderImpl;
 import org.spt.redefiner.Redefiner;
 import org.spt.redefiner.RedefinerImpl;
+import org.spt.util.FileUtil;
 import org.spt.util.SpringUtil;
 import org.spt.watch.FileWatcher;
 import org.spt.watch.FileWatcherImpl;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.util.Optional;
+import java.util.jar.JarFile;
 
 @Slf4j
 public class AgentController implements Controller{
@@ -28,11 +29,13 @@ public class AgentController implements Controller{
     private final Redefiner redefiner;
     private final Loader loader;
 
-    public AgentController(String sourceDir, Instrumentation instrumentation) throws IOException {
-        this.compiler = new CompilerImpl(sourceDir);
+    public AgentController(String args, Instrumentation instrumentation) throws IOException {
+        Configuration.init(args);
+        this.compiler = new CompilerImpl();
         this.redefiner = new RedefinerImpl(instrumentation);
-        this.loader = new LoaderImpl();
-        this.fileWatcher = new FileWatcherImpl(sourceDir,this);
+        this.loader = new LoaderImpl(instrumentation, new JarFile(
+                Configuration.getInstance().getTempDir() + "/tmp.jar"));
+        this.fileWatcher = new FileWatcherImpl(this);
         log.info("Redefinition controller initialized...");
     }
 
@@ -50,10 +53,10 @@ public class AgentController implements Controller{
     }
 
     @Override
-    public void processChanges(File file, WatchEvent.Kind<?> eventKind){
-        log.info("Start loading changes of {}", file.getAbsolutePath());
+    public void processChanges(Path file, WatchEvent.Kind<?> eventKind){
+        log.info("Start loading changes of {}", file);
         try {
-            File compiledFile = compileFile(file);
+            Path compiledFile = compileFile(file);
             if (StandardWatchEventKinds.ENTRY_MODIFY.equals(eventKind)) {
                 redefineClass(compiledFile);
             } else if (StandardWatchEventKinds.ENTRY_CREATE.equals(eventKind)) {
@@ -62,46 +65,39 @@ public class AgentController implements Controller{
                 log.error("Not implemented event kind");
             }
         }catch (ChangesLoadingException ex){
-            log.error("Ignore changes loading of {} due to {}", file.getName(), ex.getMessage());
+            log.error("Ignore changes loading of {} due to {}", file.getFileName(), ex.getMessage());
         }
     }
 
-    private void redefineClass(File compiledFile){
+    private void redefineClass(Path compiledFile){
         try {
-            String className = convertCompiledFileAbsolutePathToClassName(compiledFile);
-            log.debug("Redefining class {} from path {}", className, compiledFile.getAbsolutePath());
+            String className = FileUtil.compiledFileToClassName(compiledFile);
+            log.debug("Redefining class {} from path {}", className, compiledFile);
             if(redefiner.redefineClass(getClassFromName(className), compiledFile))
                 log.debug("Redefinition complete for class {}", className);
             else
                 log.error("Redefinition failed for class {}", className);
-        }catch (ClassNotFoundException ex){
-            log.error("Class for redefinition was not found {}", compiledFile.getName().replace(".class", ""));
+        }catch (ClassNotFoundException | IOException ex){
+            log.error("Class for redefinition was not found {}", compiledFile);
         }
     }
 
-    private void loadClass(File compiledFile){
-        log.debug("Loading class from {}", compiledFile.getAbsolutePath());
+    private void loadClass(Path compiledFile){
+        log.debug("Loading class from {}", compiledFile);
         if (loader.load(compiledFile))
-            log.debug("Class {} successfully loaded.", compiledFile.getName());
+            log.debug("Class {} successfully loaded.", compiledFile.getFileName());
         else
-            log.error("Failed to load class {}", compiledFile.getName());
+            log.error("Failed to load class {}", compiledFile.getFileName());
     }
 
-    private File compileFile(File file) throws ChangesLoadingException {
+    private Path compileFile(Path file) throws ChangesLoadingException {
         try {
-            log.debug("Compiling source file {}", file.getAbsolutePath());
+            log.debug("Compiling source file {}", file);
             return compiler.compile(file);
         } catch (Exception ex){
-            log.error("Failed to compile class {} with error {}", file.getAbsolutePath(), ex.getStackTrace());
+            log.error("Failed to compile class {} with error {}", file, ex.getStackTrace());
             throw new ChangesLoadingException("Failed to compile file with message: " + ex.getMessage());
         }
-    }
-
-    private String convertCompiledFileAbsolutePathToClassName(File file){
-        return file.getAbsolutePath()
-                .replace(Paths.get("./tmp").toAbsolutePath() + "/", "")
-                .replace("/", ".")
-                .replace(".class", "");
     }
 
     private Class<?> getClassFromName(String className) throws ClassNotFoundException {
@@ -109,11 +105,7 @@ public class AgentController implements Controller{
         if (springLoader.isPresent()){
             return Class.forName(className, false, springLoader.get());
         }else {
-            try {
-                return Class.forName(className);
-            } catch (ClassNotFoundException ex) {
-                return Class.forName(className, false, loader.getLoader());
-            }
+            return Class.forName(className);
         }
     }
 }
