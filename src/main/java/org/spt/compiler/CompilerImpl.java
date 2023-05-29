@@ -23,9 +23,9 @@ public class CompilerImpl implements Compiler{
         dependencyManager = new DependencyManagerImpl();
         if (Configuration.getInstance().getLibDir() != null) dependencyManager
                 .addDependency(Configuration.getInstance().getLibDir());
-        dependencyManager.addDependency(Paths.get(Configuration.getInstance().getTempDir() + "/tmp.jar"));
         try {
             createTempJar();
+            dependencyManager.addDependency(Paths.get(Configuration.getInstance().getTempDir() + "/tmp.jar").toRealPath());
         } catch (Exception e) {
             log.error("Failed to create temp jar file. Agent will fail to load new classes.");
         }
@@ -34,6 +34,7 @@ public class CompilerImpl implements Compiler{
     @Override
     public Path compile(Path sourceFile) throws Exception {
         log.debug("Starting compilation: {}", sourceFile);
+        log.info(dependencyManager.getDependencies());
         compileFile(sourceFile);
         log.debug("Updating temp jar.");
         updateTempJar();

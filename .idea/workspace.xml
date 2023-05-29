@@ -5,32 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f51cc543-3a3c-46eb-801f-bb8e0a0d9b89" name="Changes" comment="advanced watch service event handling, prevent doubling events, load new class on creation support, register new packages support, Spring Boot Class loader support, tests">
-      <change afterPath="$PROJECT_DIR$/FileWatcherImpl.drawio" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/spt/compiler/CompilerMaven.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/spt/compiler/DependencyManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/spt/compiler/DependencyManagerImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/spt/controller/Configuration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tmp/tmp.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/compiler/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/compiler/Compiler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/compiler/CompilerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/compiler/CompilerImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/controller/AgentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/controller/AgentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/controller/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/loader/Loader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/loader/Loader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/compiler/DependencyManagerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/compiler/DependencyManagerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/controller/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/controller/Configuration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/loader/LoaderImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/loader/LoaderImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/redefiner/Redefiner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/redefiner/Redefiner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/redefiner/RedefinerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/redefiner/RedefinerImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/util/FileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/util/FileUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/spt/watch/FileWatcherImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/spt/watch/FileWatcherImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/spt/compiler/CompilerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/spt/compiler/CompilerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/spt/controller/ControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/spt/controller/ControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/spt/controller/LoaderStub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/spt/controller/LoaderStub.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/spt/loader/LoaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/spt/loader/LoaderTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/spt/util/FileUtilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/spt/util/FileUtilTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/spt/watch/AgentControllerStub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/spt/watch/AgentControllerStub.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/spt/watch/FileWatcherTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/spt/watch/FileWatcherTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +34,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-loader/2.7.10/spring-boot-loader-2.7.10.jar!/org/springframework/boot/loader/LaunchedURLClassLoader.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/5.3.26/spring-context-5.3.26.jar!/org/springframework/context/annotation/AnnotationConfigApplicationContextExtensionsKt.class" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/pom.xml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/org/spt/DCLSAgent.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/org/spt/compiler/CompilerImpl.java" root0="FORCE_HIGHLIGHTING" />
@@ -72,26 +55,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/daniil/development/dcls",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
-    "settings.editor.splitter.proportion": "0.27717924"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/daniil/development/dcls&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.27717924&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;4ba475a139c1feb31145a0d0c7213e24&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.spt.loader" />
@@ -217,6 +201,12 @@
       <workItem from="1683901285504" duration="3756000" />
       <workItem from="1684276713363" duration="6897000" />
       <workItem from="1684468623319" duration="11097000" />
+      <workItem from="1684927059361" duration="598000" />
+      <workItem from="1684935065033" duration="1699000" />
+      <workItem from="1685062564127" duration="604000" />
+      <workItem from="1685090637875" duration="4493000" />
+      <workItem from="1685097041420" duration="2823000" />
+      <workItem from="1685322404455" duration="11469000" />
     </task>
     <task id="LOCAL-00001" summary="basic redefinition mechanism done">
       <created>1678979581804</created>

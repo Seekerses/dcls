@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.spt.compiler.JavaVersion;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -29,17 +30,11 @@ public class Configuration {
     @Getter
     private Path sourceDir;
     @Getter
-    private Path tempDir;
+    private Path tempDir = Paths.get("./tmp");
     @Getter
     private Path libDir;
 
     private Configuration(){
-        try {
-            this.tempDir = Paths.get("./tmp").toRealPath();
-        } catch (IOException e) {
-            log.error("Failed to find tmp directory.");
-            throw new RuntimeException(e);
-        }
     }
 
     protected static void init(String args){
@@ -64,25 +59,34 @@ public class Configuration {
     }
 
     public void setLibDir(String pathToLib){
+        libDir = Paths.get(pathToLib);
         try {
-            libDir = Paths.get(pathToLib).toRealPath();
+            libDir = libDir.toRealPath();
         } catch (IOException e) {
-            log.error("Failed to set lib directory.");
-            throw new RuntimeException(e);
+            log.warn("Failed to find real path for lib directory.");
         }
     }
 
     public void setTempDir(String pathToTmp){
+        tempDir = Paths.get(pathToTmp + "/tmp");
         try {
-            tempDir = Paths.get(pathToTmp).toRealPath();
+            tempDir = tempDir.toRealPath();
         } catch (IOException e) {
-            log.error("Failed to set tmp directory.");
-            throw new RuntimeException(e);
+            log.warn("Failed to find real path for tmp directory.");
         }
     }
 
     private static void setupConfiguration(String args){
         Map<String, String> params = splitArgs(args);
+        String configFile = params.get("cfg");
+        if (configFile != null){
+            log.debug("Config file detected. Reading parameters from {}", configFile);
+            try {
+                params = splitArgs(String.join("", Files.readAllLines(Paths.get(configFile))));
+            } catch (IOException e) {
+                log.error("Failed to read config file {}", configFile);
+            }
+        }
         String sourceDir = params.get("src");
         String libDir = params.get("lib");
         String sourceVersion = params.get("sv");

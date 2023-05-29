@@ -16,7 +16,7 @@ public class DependencyManagerImpl implements DependencyManager {
 
     @Override
     public String getDependencies() {
-        return dependencies.stream().map(Path::toString).collect(Collectors.joining(";"));
+        return dependencies.stream().map(Path::toString).collect(Collectors.joining(":"));
     }
 
     @Override
